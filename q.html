@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>0 + 0</title>
+    <style>
+        span {
+            background-color: orange;
+        }
+    </style>
+</head>
+<body> </br><b>Движение по счету водителя 0 и телефона 0</b></br></br>
+<div>страница - 0, бэкапы: ["2017-03-01","2017-04-01","2017-05-01"]</div>
+</br>
+<div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button style='background-color: #FF7700; padding: 10px; color: white; text-shadow: 1px 1px 2px black;'
+            onclick='buttonSearch(-1)'>
+        <b>РАНЬШЕE</b>
+    </button>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button style='background-color: #FF9900; padding: 10px; color: white; text-shadow: 1px 1px 2px black;'
+            onclick='buttonSearch(1)'>
+        <b>ПОЗЖЕE</b>
+    </button>
+</div>
+</br></br>
+<label>Дата:</label>
+<input type="date" id="calendar">';
+</br></br>
+<label>Телефон:</label>
+<input type="tel" id="input_tel" placeholder="380930000000">
+
+<label>ID водителя:</label>
+<input type="text"
+       id="input_driver_id"
+       placeholder="445827">
+
+
+<button style="background-color: #ff5100; padding: 10px; color: white; text-shadow: 1px 1px 2px black;"
+        onclick="buttonSearch(0)">
+    <b>Искать</b>
+</button>
+
+
+</br></br>
+<script>
+    const dbArr = " . json_encode($dbArr) . ";
+
+    function findIndexByDate(selectedDate) {
+        for (let i = 0; i < dbArr.length; i++) {
+            let start = dbArr[i][0];
+            let end = dbArr[i][dbArr[i].length - 1];
+
+            if (selectedDate >= start && selectedDate <= end) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        reloadpage();
+        document.getElementById('calendar').addEventListener('change', function () {
+            let selectedDate = this.value;
+
+            let index = findIndexByDate(selectedDate);
+
+            if (index === -1) {
+                alert('Дата не найдена');
+                return;
+            }
+
+            let numberphone = Number(document.getElementById('input_tel').value);
+            let driverid = Number(document.getElementById('input_driver_id').value);
+
+            window.location.href =
+                'http://localhost/vsiakoe/py.php?driver='
+                + driverid
+                + '&phone='
+                + numberphone
+                + '&list='
+                + index;
+        });
+    });
+
+
+    function reloadpage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const driverid = urlParams.get('driver');
+
+        document.getElementById('input_tel').value = urlParams.get('phone');
+        document.getElementById('input_driver_id').value = driverid;
+    }
+
+    function buttonSearch(l) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const list = urlParams.get('list');
+        let newlist = list * 1 + l * 1;
+        let numberphone = Number(document.getElementById('input_tel').value);
+        let driverid = Number(document.getElementById('input_driver_id').value);
+        window.location.href = 'http://localhost/vsiakoe/q.html?driver=' + driverid + '&phone=' + numberphone + '&list=' + newlist;
+    }
+
+</script>
+
+<table cellspacing='0' border='1' cellpadding='2'>
+    <tr style="background-color: lightgrey;">
+        <th>Дата</th>
+        <th>Было</th>
+        <th>Сумма</th>
+        <th>Коммент</th>
+        <th>Владелец</th>
+    <tr>
+</table>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</body>
+</html>
