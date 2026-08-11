@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+</head>
+<body>
+<div id = "buffer_number" style= "display:none;"></div>
+<div id = "buffer_operation" style= "display:none;"></div>
+<b id="input_field">000</b><br>
+<button onclick="click_c()"> C</button>
+<button> <=</button>
+<button onclick="click_operation('/')"> /</button>
+<button onclick="click_percent('percent')"> %</button>
+<br>
+<button onclick="click_digit(7)"> 7</button>
+<button onclick="click_digit(8)"> 8</button>
+<button onclick="click_digit(9)"> 9</button>
+<button onclick="click_operation('*')"> *</button>
+<br>
+<button onclick="click_digit(4)"> 4</button>
+<button onclick="click_digit(5)"> 5</button>
+<button onclick="click_digit(6)"> 6</button>
+<button onclick="click_operation('-')"> -</button>
+<br>
+<button onclick="click_digit(1)"> 1</button>
+<button onclick="click_digit(2)"> 2</button>
+<button onclick="click_digit(3)"> 3</button>
+<button onclick="click_operation('+')"> +</button>
+<br>
+<button> +/-</button>
+<button onclick="click_digit(0)"> 0</button>
+<button> ,</button>
+<button onclick="click_equal()"> =</button>
+
+<script>
+    function click_c() {
+        document.getElementById('input_field').innerHTML = "0";
+    }
+    function click_digit(number) {
+        let input = document.getElementById('input_field');
+
+        if (input.innerHTML == "*"
+            || input.innerHTML == "/"
+            || input.innerHTML == "NaN"
+            || input.innerHTML == "percent")
+        {
+            input.innerHTML = '0';
+        }
+
+        input.innerHTML = (input.innerHTML + number)*1;
+    }
+
+    function click_operation(operation) {
+        document.getElementById('buffer_number').innerHTML =  document.getElementById('input_field').innerHTML ;
+        document.getElementById('input_field').innerHTML = operation;
+        document.getElementById('buffer_operation').innerHTML = operation;
+
+    }
+    function click_percent(percent) {
+        document.getElementById('input_field').innerHTML = percent;
+    }
+    function click_equal() {
+        const operation = document.getElementById('buffer_operation').innerHTML;
+        const number1 = document.getElementById('buffer_number').innerHTML * 1;
+        const input = document.getElementById('input_field');
+        const number2 = input.innerHTML * 1;
+        let result = 0;
+
+        if(operation == "+"){
+            result = number1 + number2;
+        }
+        if(operation == "-"){
+            result = number1 - number2;
+        }
+        if(operation == "*"){
+            result = number1 * number2;
+        }
+        if(operation == "/"){
+            result = number1 / number2;
+        }
+
+
+
+        input.innerHTML = result;
+    }
+
+</script>
+
+</body>
+</html>
