@@ -1,0 +1,178 @@
+<!-- - реакции на кнопки чисел и операций
+- при нажатии цифровой кнопки, вывод на экран каждое следующее число добавляется с правой стороны
+- при нажатии кнопки операции, вывод только знака операции на экран
+- при нажатии кнопки <<, стирается самый правый символ на экране
+- при нажатии кнопки с, вывод 0 на экран
+- при нажатии кнопки +\-, значение на экране умножается на -1
+- при нажатии кнопки, добавление, с правой стороны
+
+- действие операций
++\-\*\/\:
+- сохранение числа в буферную переменную только когда число на єкране
+- значение числа с экрана присвоить буферной переменной
+- значение операции сохраняется в буферную переменную
+- значение экрана меняется на символ операции
+
+- при нажатии кнопки =, берется число с буф1, оператор в буфОп и число с єкрана,
+- проверяется какой оператор в буфОп и с двумя числами выполняется соответствующая операция
+
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #input {
+            font-size: 30px;
+            width: 220px;
+            border: 1px solid #dc8989;
+            text-align: right;
+            font-family: "Courier New",serif;
+        }
+
+        .button {
+            background-color: #ffe7e7;
+            width: 50px;
+            height: 40px;
+            margin: 1px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: "Courier New",serif;
+            border: 1px solid #dc8989;
+            border-radius: 8px;
+        }
+
+        .button:hover {
+            background-color: #ffd4d4;
+        }
+    </style>
+</head>
+<body>
+
+<div id = "buffer_number" style= "display:none;"></div>
+<div id = "buffer_operation" style= "display:none;"> </div>
+<div id = "input">0</div><br>
+
+<button class="button" onclick = "click_c()">C</button>
+<button class="button" onclick = "click_delete()" ><<</button>
+<button class="button" >@</button>
+<button class="button" onclick = "click_operation('/')">/</button>
+<br>
+<button class="button" onclick = "click_button(7)">7</button>
+<button class="button" onclick = "click_button(8)">8</button>
+<button class="button" onclick = "click_button(9)">9</button>
+<button class="button" onclick = "click_operation('*')">*</button>
+<br>
+<button class="button" onclick = "click_button(4)">4</button>
+<button class="button" onclick = "click_button(5)">5</button>
+<button class="button" onclick = "click_button(6)">6</button>
+<button class="button" onclick = "click_operation('-')">-</button>
+<br>
+<button class="button" onclick = "click_button(1)">1</button>
+<button class="button" onclick = "click_button(2)">2</button>
+<button class="button" onclick = "click_button(3)">3</button>
+<button class="button" onclick = "click_operation('+')">+</button>
+<br>
+<button class="button" onclick ="click_plus_minus()">+/-</button>
+<button class="button" onclick = "click_button(0)">0</button>
+<button class="button" onclick = "click_comma()">,</button>
+<button class="button" onclick = "click_result()">=</button>
+<br>
+
+<script>
+    const input = document.getElementById("input");
+    const observer = new MutationObserver(function (mutations) {
+        //alert(1234565432);
+        console.log(mutations);
+
+        if (input.innerHTML.length > 11){
+            input.innerHTML= input.innerHTML.slice(0, 11);
+        }
+    });
+
+    observer.observe(input, {
+        childList: true
+    });
+
+    function click_button(number){
+        let input = document.getElementById('input');
+
+        if (input.innerHTML === "0" || input.innerHTML === "+" ||
+            input.innerHTML === "-" || input.innerHTML === "*" ||
+            input.innerHTML === "/")
+        {
+            input.innerHTML = number;
+        } else {
+            input.innerHTML = input.innerHTML + number;
+        }
+    }
+
+    function click_operation(operation){
+        let input = document.getElementById('input');
+        if (input.innerHTML === "+" ||input.innerHTML === "-" ||
+            input.innerHTML === "*" ||input.innerHTML === "/" )
+        {
+            input.innerHTML = operation;
+            document.getElementById('buffer_operation').innerHTML = operation;
+        } else {
+            document.getElementById('buffer_number').innerHTML =  input.innerHTML ;
+            input.innerHTML = operation;
+            document.getElementById('buffer_operation').innerHTML = operation;
+        }
+    }
+
+    function click_delete(){
+        let input = document.getElementById('input');
+        if( input.innerHTML.length > 1 ){
+            input.innerHTML = input.innerHTML.slice(0, -1);
+        } else if( input.innerHTML.length === 1 ) {
+            input.innerHTML = "0";
+        }
+    }
+
+    function click_c (){
+        document.getElementById('input').innerHTML = "0";
+    }
+
+    function click_plus_minus(){
+        let input = document.getElementById('input');
+        input.innerHTML = (input.innerHTML * (-1)).toString();
+    }
+
+    function click_comma(){
+        let input = document.getElementById('input');
+
+        if (!input.innerHTML.includes('.')){
+            input.innerHTML = input.innerHTML + '.';
+        }
+    }
+
+    function click_result(){
+        let number1 = document.getElementById('buffer_number').innerHTML* 1;
+        let operation =  document.getElementById('buffer_operation').innerHTML;
+        let input = document.getElementById('input');
+        let number2 = input.innerHTML * 1;
+        let result = 0;
+
+        if (operation === "+") {
+            result = number1 + number2;
+        }
+
+        if (operation === "-") {
+            result = number1 - number2;
+        }
+
+        if (operation === "*") {
+            result = number1 * number2;
+        }
+
+        if (operation === "/") {
+            result = number1 / number2;
+        }
+        input.innerHTML = result.toString();
+    }
+</script>
+</body>
+</html>

@@ -42,7 +42,7 @@
 
         if (input.innerHTML == "*"
             || input.innerHTML == "/"
-            || input.innerHTML == "NaN"
+            || input.innerHTML == "NaN"reredos
             || input.innerHTML == "percent")
         {
             input.innerHTML = '0';
